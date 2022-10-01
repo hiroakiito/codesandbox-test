@@ -194,8 +194,56 @@ module.hot.accept(reloadCSS);
 
 require("./styles.css");
 
-console.log("ああああ");
-document.getElementById("app").innerHTML = "\n<h1>Hello Vanilla!</h1>\n<div>\n  We use the same configuration as Parcel to bundle this sandbox, you can find more\n  info about Parcel \n  <a href=\"https://parceljs.org\" target=\"_blank\" rel=\"noopener noreferrer\">here</a>.\n</div>\n";
+var onClickAdd = function onClickAdd() {
+  var inputText = document.getElementById("add-text").value;
+  document.getElementById("add-text").value = "";
+  createIncompleteList(inputText);
+};
+
+var deleteFromIncompleteList = function deleteFromIncompleteList(target) {
+  document.getElementById("incomplete-list").removeChild(target);
+};
+
+var createIncompleteList = function createIncompleteList(text) {
+  var div = document.createElement("div");
+  div.className = "list-row";
+  var li = document.createElement("li");
+  li.innerText = text;
+  var completeButton = document.createElement("button");
+  completeButton.innerText = "完了";
+  completeButton.addEventListener("click", function () {
+    deleteFromIncompleteList(deleteButton.parentNode);
+    var addTarget = completeButton.parentNode;
+    var text = addTarget.firstElementChild.innerText;
+    addTarget.textContent = null;
+    var li = document.createElement("li");
+    li.innerText = text;
+    var backButton = document.createElement("button");
+    backButton.addEventListener("click", function () {
+      var deleteTarget = backButton.parentNode;
+      document.getElementById("complete-list").removeChild(deleteTarget);
+      var text = backButton.parentNode.firstElementChild.innerText;
+      createIncompleteList(text);
+    });
+    backButton.innerText = "戻す";
+    addTarget.appendChild(li);
+    addTarget.appendChild(backButton);
+    document.getElementById("complete-list").appendChild(addTarget);
+  });
+  var deleteButton = document.createElement("button");
+  deleteButton.innerText = "削除";
+  deleteButton.addEventListener("click", function () {
+    deleteFromIncompleteList(deleteButton.parentNode);
+  });
+  div.appendChild(li);
+  div.appendChild(completeButton);
+  div.appendChild(deleteButton);
+  document.getElementById("incomplete-list").appendChild(div);
+};
+
+document.getElementById("add-button").addEventListener("click", function () {
+  return onClickAdd();
+});
 },{"./styles.css":"src/styles.css"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -224,7 +272,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "42515" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "35577" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
